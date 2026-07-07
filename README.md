@@ -98,10 +98,11 @@ Maintained by [Di Hu](https://github.com/di-omics).
 
 ## Reproductive & Embryo CV
 
-The clinical leaders here (iDAScore, KIDScore) are closed. My POV: **assemble it from the open stack**. A detector for the embryo/blastomere ROI, SAM 2 for the mask, Ultrack or Trackastra for cleavage-division lineage over the time-lapse, evaluated with FiftyOne. The open literature is enough to reproduce the signal.
+The clinical leaders here (iDAScore, KIDScore) are closed. My POV: **assemble it from the open stack**. A detector for the embryo/blastomere ROI, SAM 2 for the mask, Ultrack or Trackastra for cleavage-division lineage over the time-lapse, evaluated with FiftyOne. The open literature is enough to reproduce the signal. Field-tested on embryo time-lapse: even a generic ViT-Large or DINOv2 backbone with zero embryo training recovers a real developmental-time signal from the raw frames (leave-one-out R2 up to 0.9 on clean wells), and a classical ROI pass drops empty and out-of-focus wells before any model runs. The open stack reproduces the grading signal, and fine-tuning only sharpens it.
 
 - [Khosravi et al., 2019 - STORK](https://doi.org/10.1038/s41746-019-0096-y) - deep learning for robust blastocyst assessment/selection (*npj Digital Medicine*).
 - [Berntsen et al., 2022 - iDAScore v1.0](https://doi.org/10.1371/journal.pone.0262661) - generalizable embryo selection from time-lapse image sequences (*PLOS ONE*).
+- [Rajendran et al., 2025 - FEMI](https://doi.org/10.1038/s41467-025-61116-2) - foundational model for IVF trained on 18M time-lapse images (*Nature Communications*); the embryo-specific backbone to swap into an open embedding pipeline, weights gated on HuggingFace (ihlab/FEMI).
 
 ## Key Papers & Surveys
 
