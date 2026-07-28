@@ -1,0 +1,33 @@
+name: check
+
+# The list's one hard rule is that every link resolves. A rule nobody runs is a preference,
+# so it runs here instead of in a contributor's memory.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Links rot on their own schedule, not on ours. Weekly, so a dead link surfaces as a
+    # failed run rather than as a reader hitting a 404 months later.
+    - cron: "0 9 * * 1"
+  workflow_dispatch:
+
+jobs:
+  metrics:
+    # Offline and instant. Runs on every PR because an unsourced number is a content
+    # decision the author should see before merge, not a week later.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/check_list.py --metrics
+
+  links:
+    # Touches the network, so it is not gated on every push to avoid failing a PR on
+    # someone else's rate limit. Throttled hosts report UNKNOWN and do not fail the run.
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/check_list.py --links
+        env:
+          GH_TOKEN: ${{ github.token }}
